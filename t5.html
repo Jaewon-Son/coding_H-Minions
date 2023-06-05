@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t555</title>
+    <style>
+        /* 스타일링을 위한 CSS */
+        .container {
+            width: 500px;
+            height: 720px;
+            overflow: auto;
+            background-color: beige;
+        }
+        table {
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10%;
+            margin-bottom: 10%;
+            width: 80%;
+            height: 80%;
+        }
+        th, td {
+            padding: 4px;
+            text-align: left;
+        }
+        th:first-child,
+        td:first-child {
+            width: 20%;
+        }
+
+        /* 시작 시간과 마감 시간 사이 영역에 배경색 추가 */
+        .highlight {
+            background-color: rgb(221, 173, 240);
+        }
+
+        .text-input {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .text-input button {
+            padding: 4px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table id="timeline">
+        </table>
+    </div>
+
+    <div class="time-selection">
+        <label for="startTime">시작 시간:</label>
+        <select id="startTime">
+        </select>
+    </div>
+
+    <div class="time-selection">
+        <label for="endTime">마감 시간:</label>
+        <select id="endTime">
+        </select>
+    </div>
+
+    <div class="text-input">
+        <input type="text" id="contentInput" placeholder="텍스트 입력">
+        <button id="setButton">출력</button>
+        <button id="eraseButton">삭제</button>
+    </div>
+    <script src="t5js.js"></script>
+</body>
+</html>
