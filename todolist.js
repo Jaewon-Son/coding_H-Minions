@@ -1,3 +1,4 @@
+let minions
 let todo_storage = [];
 const K = "todo";
 const $todo_form = document.querySelector("#todo_form");
