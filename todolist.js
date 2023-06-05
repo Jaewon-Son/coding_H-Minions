@@ -47,10 +47,10 @@ function add_todo(info) { //할 일을 화면에 표시하는 함수(할일,버�
   const checkbox = document.createElement("input"); // 체크박스 생성
   checkbox.type = "checkbox";
   checkbox.addEventListener("change", toggleStrikeThrough); // 체크박스 체크 시
-  
-  if(info.done == true){ // 새로고침해도 체크 유지하기----(재원)
-    text.classList.toggle("strike-through");
-    checkbox.checked = true;
+  // 새로고침해도 체크 유지하기----(재원)
+  if(info.done == true){ //할 일을 완료(체크박스 체크)일 때
+    text.classList.toggle("strike-through"); //취소선 표시
+    checkbox.checked = true;  //체크박스 체크표시
   }
 
   const editButton = document.createElement("button"); // 수정버튼 생성
