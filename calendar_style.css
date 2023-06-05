@@ -1,0 +1,23 @@
+/* 달력 스타일링을 위한 CSS 코드 추가 */
+.calendar table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .calendar th,
+  td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+  }
+
+  .calendar th {
+    background-color: #f2f2f2;
+  }
+
+  .inactive {
+    color: #999;
+  }
+  #selected{
+    background-color: greenyellow;
+  }
