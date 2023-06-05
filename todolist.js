@@ -1,35 +1,33 @@
-//깃허브에 올라갈까...????
-
-let todo_storage = [];
+//투두리스트(재원)---------------------
+let todo_storage = []; //localstorage에 넣을 구조체 배열
 const K = "todo";
 const $todo_form = document.querySelector("#todo_form");
 const $todo_input = document.querySelector("#todo_input");
 const $todo_list = document.querySelector("#todo_list");
+let $sel_day = document.querySelector("#selected");
 $todo_form.addEventListener("submit", input_todo);
 
 const load_todo = localStorage.getItem(K); //localstorage에서 불러오기
 if (load_todo) {
   const loaded = JSON.parse(load_todo); //localstorage에 있는 문자열을 다시 배열로 변환
   todo_storage = loaded; //배열에 저장
-  for (let i = 0; i < todo_storage.length; i++) {
-    //불러온 함수를 표시하기
+  for (let i = 0; i < todo_storage.length; i++) {    //불러온 함수를 표시하기
     add_todo(todo_storage[i]);
   }
 }
 
-function input_todo(e) {
-  //할 일 입력시
+function input_todo(e) {  //할 일 입력시
+  $sel_day = document.querySelector("#selected"); // 선택한 날짜 지정
   e.preventDefault(); //새로고침 방지
   const todo_text = $todo_input.value; //입력받은 할 일을 변수에 저장
-  if ($todo_input.value == "") {
-    //아무것도 입력하지 않았을 때
+  if ($todo_input.value == "") {      //아무것도 입력하지 않았을 때
     alert("할 일을 입력하세요!!");
     return;
   }
-  const todo_info = {
-    //텍스트와 id를 저장할 구조체
+  const todo_info = {    //텍스트와 id를 저장할 구조체
     text: todo_text,
     id: Date.now(), //현재시간으로 id를 주어 각각의 할 일 구분
+    done: false //체크박스가 체크 되어있으면 true로 변경
   };
   $todo_input.value = ""; //입력창 초기화
   add_todo(todo_info); //화면에 표시하는 함수 호출
@@ -37,18 +35,23 @@ function input_todo(e) {
   refresh_todo();
 }
 
-function add_todo(info) {
-  //할 일을 화면에 표시하는 함수(할일,버튼들 추가)
+function add_todo(info) { //할 일을 화면에 표시하는 함수(할일,버튼들 추가)
 
   const list = document.createElement("li"); //li태그 생성
   list.id = info.id; //현재 시간을 id로 설정
 
+  const text = document.createElement("span"); //span태그 생성(줄바꿈 방지를 위해 div대신 사용)
+  text.innerText = info.text + " "; //입력받은 텍스트 삽입
+
+  // 민형님 삭제/수정 파트----------------------------
   const checkbox = document.createElement("input"); // 체크박스 생성
   checkbox.type = "checkbox";
   checkbox.addEventListener("change", toggleStrikeThrough); // 체크박스 체크 시
-
-  const text = document.createElement("span"); //span태그 생성(줄바꿈 방지를 위해 div대신 사용)
-  text.innerText = info.text + " "; //입력받은 텍스트 삽입
+  
+  if(info.done == true){ // 새로고침해도 체크 유지하기----(재원)
+    text.classList.toggle("strike-through");
+    checkbox.checked = true;
+  }
 
   const editButton = document.createElement("button"); // 수정버튼 생성
   editButton.innerHTML = '<i class="far fa-edit"></i>';
@@ -67,6 +70,7 @@ function add_todo(info) {
   editInput.style.display = "none";
   editInput.addEventListener("keydown", handleEditKeydown); // 엔터키 입력 시
   editInput.addEventListener("blur", handleEditBlur); // 입력 창이 아닌 다른 부분 클릭 시
+  //------------------------------------민형님 삭제/수정 파트
 
   $todo_list.appendChild(list); //ul태그에 list추가
   list.appendChild(checkbox); //리스트에 체크박스 추가
@@ -76,7 +80,15 @@ function add_todo(info) {
   list.appendChild(editInput); //리스트에 입력창 추가
 }
 
-function remove_todo(e) {
+
+
+function refresh_todo(arr) {  //localstorage에 최신화 시키기
+  localStorage.setItem(K, JSON.stringify(todo_storage));
+  //JSON_stringify : 요소를 문자열로 바꿔주는 함수
+}
+
+//민형님 삭제/수정 파트---------------------------------------------
+function remove_todo(e) { //삭제하는 함수
   //일정 삭제하기
   const removeButton = e.target; //부모 객체(li 태그) 선택
   const list = removeButton.closest("li"); // 최상위 li 요소를 선택하기 위해 closest() 메소드 사용
@@ -92,30 +104,22 @@ function remove_todo(e) {
   }
 }
 
-function refresh_todo(arr) {
-  //localstorage에 최신화 시키기
-  localStorage.setItem(K, JSON.stringify(todo_storage));
-  //JSON_stringify : 요소를 문자열로 바꿔주는 함수
-}
+function toggleStrikeThrough(event) { //완료하면 취소선
+  
+  //완료체크 되면 done을 true로 뱌꾸기-----(재원)
+  const id = parseInt(event.target.parentElement.id); //현재 할일의 id
+  const todo = todo_storage.find((todo) => todo.id == id); //현재 할일의 local배열 인덱스 가져오기
+  if(todo.done == true){ //이미 완료한 일 일경우 false로 변경
+    todo.done = false;
+  } else {  //완료하지 않은 일이면 true로 변경
+    todo.done = true;
+  }
+  refresh_todo(); //localstorage 새로고침
+  //----------------------(재원) 끝
 
-//---------------------------------------------- 민형님
-function toggleStrikeThrough(event) {
   const text = event.target.nextSibling; // 체크박스 다음에 위치한 텍스트 요소 선택
   text.classList.toggle("strike-through"); // 텍스트에 줄 긋기 스타일 토글
 }
-
-// function removeTodo(event) {
-//   const removeButton = event.target;
-//   const list = removeButton.closest("li"); // 최상위 li 요소를 선택하기 위해 closest() 메소드 사용
-
-//   if (list) {
-//     list.remove();
-
-//     const todoId = parseInt(list.id);
-//     todo_storage = todo_storage.filter((todo) => todo.id !== todoId); // 할 일 목록에서 제거
-//     refresh_todo(); // 할 일 목록 저장소 업데이트
-//   }
-// }
 
 function editTodo(event) {
   const editButton = event.target;
