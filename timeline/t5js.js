@@ -109,31 +109,75 @@ document.addEventListener("DOMContentLoaded", function()
         console.log("시작 시간:", startTime);
         console.log("마감 시간:", endTime);
         console.log("diff", ingTime);
-        console.log("텍스트 내용:", timeContent);
 
-        startTimeText = parseInt(startTime);
+        //startTimeText = parseInt(startTime);
+
+        let startTimeNum = Number(startTime.substr(0,2));
+        let endTimeNum = Number(endTime.substr(0,2));
+        //console.log(localArray[startTimeNum][1], localArray[endTimeNum-1][1] );
+        let cnt = 0;
 
 
         // 색칠된 거 흰색으로 바꿔두기
         // 배열에서 데이터 지우고 그 배열을 다시 ls에 올리기
+        var ss = null;
         for(let i = 0; i < 24; i++)
             {
-                if(startTime == localArray[i][0])
+                if(localArray[startTimeNum][1]== localArray[i][1] || localArray[endTimeNum-1][1] == localArray[i][1]) // 선택한 시간에 걸친 일정이 현재 For문 도는 시간의 일정과 동일한지
+                {   
+                    cnt++;
+                    if(cnt == 1)
                         {
-                            for(let j = i; j < i+ ingTime; j++) // 시작시간과 마감시간 사이에 데이터 채우깅
-                                {
-                                    localArray[j][1] = '';
-                                }
-                                console.log('localArray: ',localArray);
-                                localStorage.clear();
-                                localStorage.setItem('array', JSON.stringify(localArray));
+                            ss = i;
+                            // if(cnt2 != 0)
+                            // {
+                            //     localArray[ss][i] = '';
+                            // }
                         }
-                // for(let j = 0; j< 24; j++)
-                // {
-                //     if()
-                // }
+                    //else if(cnt == )
+                    else
+                    {
+                        console.log("test ", i);
+                        //deleteContent = localArray[i][1]
+                        localArray[i][1] = '';
+                        localStorage.clear();
+                        localStorage.setItem('array', JSON.stringify(localArray));
+                    }
+                }
+                else
+                {
+                    if(ss == null)
+                    {
+                        console.log("testtt:",i);
+                    }
+                    else if(localArray[ss][1] == localArray[i][1])
+                    {
+                        localArray[i][1] = '';
+                        localStorage.clear();
+                        localStorage.setItem('array', JSON.stringify(localArray));
+                    }
+                        console.log("ewarstdyfdrseawtrsdyjf",i);
+                    //}
+                    
+                }
+                // if(startTime == localArray[i][0])
+                //         {
+                //             for(let j = i; j < i+ ingTime; j++) // 시작시간과 마감시간 사이에 데이터 채우깅
+                //                 {
+                //                     localArray[j][1] = '';
+                //                 }
+                //                 console.log('localArray: ',localArray);
+                //                 localStorage.clear();
+                //                 localStorage.setItem('array', JSON.stringify(localArray));
+                //         }
             }
-        
+        console.log("111111localArray",localArray);
+        localArray[ss][1] = '';
+        localStorage.clear();
+        localStorage.setItem('array', JSON.stringify(localArray));
+        console.log("22222localArray",localArray);
+            
+
         // console.log("localArray",localArray);
         // console.log("localStorage",localStorage);
 
@@ -141,9 +185,10 @@ document.addEventListener("DOMContentLoaded", function()
         startTimeSelect.selectedIndex = 0;
         endTimeSelect.selectedIndex = 0;
         document.getElementById("contentInput").value = "";
+        
 
         highlightColor(); // 색칠 영역 갱신시켜버리기 
-    }
+            }
     );
 
         highlightColor(); // 애초에 창 켰을 때 색칠되어야 할 건 색칠해야 하니까..

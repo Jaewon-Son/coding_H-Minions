@@ -6,27 +6,43 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width= device-width, initial-scale=1.0">
   <title>Todo List</title>
-  <link rel="stylesheet" href="todostyle.css">
+  <link rel="stylesheet" href="css/todostyle.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="css/calendar_style.css">
+  <link rel="stylesheet" href="css/timeline.css">
 </head>
 
 <body>
   <div id="calendar" style="float : left; width: 33.33%;">
-    달력
-    <hr>
   </div>
   <div id="todo" style="float : left; width: 33.33%;">
     <form id="todo_form">
       <input id="todo_input" type="text" placeholder="할 일을 입력하세요.">
       <button class="submit" type="submit" id="todo_add">+</button>
+      <div class="time-selection">
+        <label for="startTime">시작 시간:</label>
+        <select id="startTime">
+        </select>
+    </div>
+
+    <div class="time-selection">
+        <label for="endTime">마감 시간:</label>
+        <select id="endTime">
+        </select>
+    </div>
     </form>
     <ul id="todo_list"></ul>
   </div>
-  <div style="float : left; width: 33.33%;">
-    상세
+  <div id="timeline" style="float : left; width: 33.33%;">
+    <div class="container">
+      <table id="timetable">
+      </table>
+  </div>
     <hr>
   </div>
 </body>
-<script src="todolist.js"></script>
+<script src="javascript/todolist.js"></script> <!--순서 바꾸지 말것! -->
+<script src="javascript/calendar.js"></script>
+<script src="javascript/timeline.js"></script> 
 
 </html>

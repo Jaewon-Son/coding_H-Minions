@@ -1,0 +1,43 @@
+ /* timeline 스타일링을 위한 CSS */
+ .container {
+    width: 500px;
+    height: 720px;
+    overflow: auto;
+    background-color: beige;
+}
+
+#timeline table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    width: 80%;
+    height: 80%;
+}
+
+#timeline th,
+td {
+    padding: 4px;
+    text-align: left;
+}
+
+#timeline th:first-child,
+td:first-child {
+    width: 20%;
+}
+
+/* 시작 시간과 마감 시간 사이 영역에 배경색 추가 */
+.highlight {
+    background-color: rgb(221, 173, 240);
+}
+
+.text-input {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.text-input button {
+    padding: 4px 10px;
+}
