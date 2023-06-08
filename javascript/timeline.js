@@ -92,61 +92,62 @@ setButton.addEventListener("submit", function () {
   highlightColor();
 });
 
+//삭제 기능은 아직 연동 중입니다.
 // 일정 삭제 할겨 // 색칠된 거 지우고, 배열에서 데이터도 지우기 ls 포함
-var eraseButton = document.getElementById("eraseButton");
-eraseButton.addEventListener("click", function () {
-  var startTime = startTimeSelect.value; // 설정된 시작 시간
-  var endTime = endTimeSelect.value; // 설정된 마감 시간
-  var ingTime = Math.abs(parseInt(startTime) - parseInt(endTime)); // 진행되는 시간
-  var timeContent = document.getElementById("contentInput").value;
+// var eraseButton = document.getElementById("eraseButton");
+// eraseButton.addEventListener("click", function () {
+//   var startTime = startTimeSelect.value; // 설정된 시작 시간
+//   var endTime = endTimeSelect.value; // 설정된 마감 시간
+//   var ingTime = Math.abs(parseInt(startTime) - parseInt(endTime)); // 진행되는 시간
+//   var timeContent = document.getElementById("contentInput").value;
 
-  //startTimeText = parseInt(startTime);
+//   //startTimeText = parseInt(startTime);
 
-  let startTimeNum = Number(startTime.substr(0, 2));
-  let endTimeNum = Number(endTime.substr(0, 2));
-  //console.log(localArray[startTimeNum][1], localArray[endTimeNum-1][1] );
-  let cnt = 0;
+//   let startTimeNum = Number(startTime.substr(0, 2));
+//   let endTimeNum = Number(endTime.substr(0, 2));
+//   //console.log(localArray[startTimeNum][1], localArray[endTimeNum-1][1] );
+//   let cnt = 0;
 
-  // 색칠된 거 흰색으로 바꿔두기
-  // 배열에서 데이터 지우고 그 배열을 다시 ls에 올리기
-  var ss = null;
-  for (let i = 0; i < 24; i++) {
-    if (
-      localArray[startTimeNum][1] == localArray[i][1] ||
-      localArray[endTimeNum - 1][1] == localArray[i][1]
-    ) {
-      // 선택한 시간에 걸친 일정이 현재 For문 도는 시간의 일정과 동일한지
-      cnt++;
-      if (cnt == 1) {
-        ss = i;
-      } else {
-        console.log("test ", i);
-        localArray[i][1] = "";
-      }
-    } else {
-      if (ss == null) {
-        console.log("testtt:", i);
-      } else if (localArray[ss][1] == localArray[i][1]) {
-        localArray[i][1] = "";
-        localStorage.clear();
-        localStorage.setItem("array", JSON.stringify(localArray));
-      }
-      console.log("ewarstdyfdrseawtrsdyjf", i);
-    }
-  }
-  console.log("111111localArray", localArray);
-  localArray[ss][1] = "";
-  localStorage.clear();
-  localStorage.setItem("array", JSON.stringify(localArray));
-  console.log("22222localArray", localArray);
+//   // 색칠된 거 흰색으로 바꿔두기
+//   // 배열에서 데이터 지우고 그 배열을 다시 ls에 올리기
+//   var ss = null;
+//   for (let i = 0; i < 24; i++) {
+//     if (
+//       localArray[startTimeNum][1] == localArray[i][1] ||
+//       localArray[endTimeNum - 1][1] == localArray[i][1]
+//     ) {
+//       // 선택한 시간에 걸친 일정이 현재 For문 도는 시간의 일정과 동일한지
+//       cnt++;
+//       if (cnt == 1) {
+//         ss = i;
+//       } else {
+//         console.log("test ", i);
+//         localArray[i][1] = "";
+//       }
+//     } else {
+//       if (ss == null) {
+//         console.log("testtt:", i);
+//       } else if (localArray[ss][1] == localArray[i][1]) {
+//         localArray[i][1] = "";
+//         localStorage.clear();
+//         localStorage.setItem("array", JSON.stringify(localArray));
+//       }
+//       console.log("ewarstdyfdrseawtrsdyjf", i);
+//     }
+//   }
+//   console.log("111111localArray", localArray);
+//   localArray[ss][1] = "";
+//   localStorage.clear();
+//   localStorage.setItem("array", JSON.stringify(localArray));
+//   console.log("22222localArray", localArray);
 
-  // 다시 기본값으로 다시 설정
-  startTimeSelect.selectedIndex = 0;
-  endTimeSelect.selectedIndex = 0;
-  document.getElementById("contentInput").value = "";
+//   // 다시 기본값으로 다시 설정
+//   startTimeSelect.selectedIndex = 0;
+//   endTimeSelect.selectedIndex = 0;
+//   document.getElementById("contentInput").value = "";
 
-  highlightColor(); // 색칠 영역 갱신시켜버리기
-});
+//   highlightColor(); // 색칠 영역 갱신시켜버리기
+// });
 
 // highlightColor(); // 애초에 창 켰을 때 색칠되어야 할 건 색칠해야 하니까..
 
