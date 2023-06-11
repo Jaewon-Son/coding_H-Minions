@@ -47,7 +47,7 @@ if (load_local) {
     let text = parsed[i].text;
     let start = parsed[i].start;
     let end = parsed[i].end;
-    let interval = Math.abs(parseInt(start) - parseInt(end));
+    let interval = parseInt(end) - parseInt(start);
     for (let i = 0; i < 24; i++) {
       if (start == localArray[i][0]) {
         for (let j = i; j < i + interval; j++) {
@@ -58,7 +58,7 @@ if (load_local) {
   }
   highlightColor();
 }
-//함수 실행시 삭제 버튼에 클릭 이벤트 추가(재원)
+//실행시 삭제 버튼에 타임라인 삭제 이벤트 추가(재원)
 var eraseButton = document.querySelectorAll(".remove-button");
 eraseButton.forEach((remove) => {
   remove.addEventListener("click", function (e) {
@@ -69,6 +69,30 @@ eraseButton.forEach((remove) => {
 
     arr.splice(index, 1);
     localStorage.setItem("todo", JSON.stringify(arr));
+  });
+});
+
+//실행시 수정버튼에 타임라인 수정 이벤트 추가(재원)
+const $edit_input = document.querySelectorAll(".edit-input");
+$edit_input.forEach((edit) => {
+  edit.addEventListener("keydown", function (e) {
+    let ls = localStorage.getItem("todo");
+    let arr = JSON.parse(ls);
+    let index = arr.findIndex((info) => info.id == e.target.closest("li").id);
+
+    if (e.key === "Enter") {
+      let start = arr[index].start;
+      let end = arr[index].end;
+      let interval = parseInt(end) - parseInt(start);
+      let text = arr[index].text;
+      let start_index = Number(start.substr(0, 2));
+      for (let i = start_index; i < start_index + interval; i++) {
+        localArray[i][1] = text;
+      }
+      var rows = table.getElementsByTagName("tr");
+      var contentCell = rows[start_index].getElementsByTagName("td")[1];
+      contentCell.textContent = localArray[start_index][1];
+    }
   });
 });
 
@@ -102,23 +126,43 @@ setButton.addEventListener("submit", function () {
   document.getElementById("todo_input").value = "";
   highlightColor();
 
-  //삭제버튼에 클릭 이벤트 추가(재원)
+  //삭제버튼에 타임라인 삭제 이벤트 추가(재원)
   eraseButton = document.querySelectorAll(".remove-button");
   eraseButton.forEach((remove) => {
     remove.addEventListener("click", function (e) {
       let ls = localStorage.getItem("todo");
       let arr = JSON.parse(ls);
-      const index = arr.findIndex(
-        (info) => info.id == e.target.closest("li").id
-      ); //삭제하려고 클릭한 todo의 id로 배열 객체의 인덱스 찾기
+      let index = arr.findIndex((info) => info.id == e.target.closest("li").id); //삭제하려고 클릭한 todo의 id로 배열 객체의 인덱스 찾기
       remove_timeline(arr[index]); //해당되는 배열로 타임라인 삭제함수 호출
 
       arr.splice(index, 1);
       localStorage.setItem("todo", JSON.stringify(arr));
     });
   });
-});
+  //수정시 타임라인 수정 이벤트 추가(재원)
+  $edit_input = document.querySelectorAll(".edit-input");
+  $edit_input.forEach((edit) => {
+    edit.addEventListener("keydown", function (e) {
+      let ls = localStorage.getItem("todo");
+      let arr = JSON.parse(ls);
+      let index = arr.findIndex((info) => info.id == e.target.closest("li").id);
 
+      if (e.key === "Enter") {
+        let start = arr[index].start;
+        let end = arr[index].end;
+        let interval = parseInt(end) - parseInt(start);
+        let text = arr[index].text;
+        let start_index = Number(start.substr(0, 2));
+        for (let i = start_index; i < start_index + interval; i++) {
+          localArray[i][1] = text;
+        }
+        var rows = table.getElementsByTagName("tr");
+        var contentCell = rows[start_index].getElementsByTagName("td")[1];
+        contentCell.textContent = localArray[start_index][1];
+      }
+    });
+  });
+});
 
 function remove_timeline(info) {
   var startTime = info.start; // 설정된 시작 시간
