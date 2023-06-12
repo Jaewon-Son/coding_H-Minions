@@ -17,13 +17,14 @@
 }
 
 #timeline th,
-td {
+#timeline td {
     padding: 4px;
     text-align: left;
+    border: 0.5px solid gray;
 }
 
 #timeline th:first-child,
-td:first-child {
+#timeline td:first-child {
     width: 20%;
 }
 

@@ -1,23 +1,47 @@
-/* 달력 스타일링을 위한 CSS 코드 추가 */
-.calendar table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+.Calendar td {
+  width: 50px;
+  height: 50px;
+}
 
-  .calendar th,
-  td {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ccc;
-  }
+.Calendar {
+  display: inline-block;
+  margin: 0 auto;
+}
 
-  .calendar th {
-    background-color: #f2f2f2;
-  }
+.Calendar>thead>tr:first-child>td {
+  font-weight: bold;
+}
 
-  .inactive {
-    color: #999;
-  }
-  #selected{
-    background-color: greenyellow;
-  }
+.Calendar>thead>tr:last-child>td {
+  background-color: gray;
+  color: white;
+}
+
+.pastDay {
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+
+.today {
+  background-color: #4de228;
+  cursor: pointer;
+}
+
+.futureDay {
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+
+.pastDay.Day,
+.futureDay.Day,
+.today.Day {
+  background-color: transparent;
+  border: 2px solid #a1f1ab;
+  color: #a1f1ab;
+  /* 내용의 색상을 변경해주기 위해 텍스트 색상을 지정 */
+  cursor: pointer;
+  padding: 4px;
+  /* 내용이 테두리에 맞게 들어가도록 패딩 추가 */
+  box-sizing: border-box;
+  /* 패딩을 포함한 테두리 크기를 유지 */
+}

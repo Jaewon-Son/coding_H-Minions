@@ -14,6 +14,30 @@
 
 <body>
   <div id="calendar" style="float : left; width: 33.33%;">
+    <table class="Calendar">
+      <thead><!--table의 자식노드로  테이블의 head부분을 정의하는 역할-->
+        <tr><!--tr은 행 td는 셀(열)-->
+          <td onClick="prevcalendar();" style="cursor:pointer;">&#60;</td>
+          <td colspan="5">
+            <span id="thisYear"></span>년
+            <span id="thisMonth"></span>월
+          </td>
+          <td onClick="nextcalendar();" style="cursor:pointer;">&#62;</td>
+        </tr>
+        <tr>
+          <td>일</td>
+          <td>월</td>
+          <td>화</td>
+          <td>수</td>
+          <td>목</td>
+          <td>금</td>
+          <td>토</td>
+        </tr>
+      </thead>
+
+      <tbody>
+      </tbody>
+    </table>
   </div>
   <div id="todo" style="float : left; width: 33.33%;">
     <form id="todo_form">
@@ -23,13 +47,13 @@
         <label for="startTime">시작 시간:</label>
         <select id="startTime">
         </select>
-    </div>
+      </div>
 
-    <div class="time-selection">
+      <div class="time-selection">
         <label for="endTime">마감 시간:</label>
         <select id="endTime">
         </select>
-    </div>
+      </div>
     </form>
     <ul id="todo_list"></ul>
   </div>
@@ -37,12 +61,12 @@
     <div class="container">
       <table id="timetable">
       </table>
-  </div>
+    </div>
     <hr>
   </div>
 </body>
 <script src="javascript/todolist.js"></script> <!--순서 바꾸지 말것! -->
 <script src="javascript/calendar.js"></script>
-<script src="javascript/timeline.js"></script> 
+<script src="javascript/timeline.js"></script>
 
 </html>
