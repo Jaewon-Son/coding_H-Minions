@@ -73,7 +73,7 @@ eraseButton.forEach((remove) => {
 });
 
 //실행시 수정버튼에 타임라인 수정 이벤트 추가(재원)
-const $edit_input = document.querySelectorAll(".edit-input");
+let $edit_input = document.querySelectorAll(".edit-input");
 $edit_input.forEach((edit) => {
   edit.addEventListener("keydown", function (e) {
     let ls = localStorage.getItem("todo");
