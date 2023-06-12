@@ -38,12 +38,12 @@ for (var time = 0; time < 24; time++) {
   endTimeSelect.appendChild(selectBoxEnd); // 22번줄
 }
 
-//구조체에서 불러오기 (재원)
+//객체에서 불러오기 (재원)
 const load_local = localStorage.getItem("todo");
 if (load_local) {
   const parsed = JSON.parse(load_local);
   for (let i = 0; i < parsed.length; i++) {
-    //구조체에서 값 불러오기
+    //객체에서 값 불러오기
     let text = parsed[i].text;
     let start = parsed[i].start;
     let end = parsed[i].end;
@@ -51,7 +51,7 @@ if (load_local) {
     for (let i = 0; i < 24; i++) {
       if (start == localArray[i][0]) {
         for (let j = i; j < i + interval; j++) {
-          localArray[j][1] = text; //배열 내부값 설정하기
+          localArray[j][1] = text; //배열 값 설정하기(일정이 있는 시간에 텍스트 넣기)
         }
       }
     }
@@ -64,7 +64,7 @@ eraseButton.forEach((remove) => {
   remove.addEventListener("click", function (e) {
     let ls = localStorage.getItem("todo");
     let arr = JSON.parse(ls);
-    const index = arr.findIndex((info) => info.id == e.target.closest("li").id); //삭제하려고 클릭한 todo의 id로 배열 객체의 인덱스 찾기
+    const index = arr.findIndex((info) => info.id == e.target.closest("li").id); //삭제하려고 클릭한 todo의 id로 객체 배열의 인덱스 찾기
     remove_timeline(arr[index]); //해당되는 배열로 타임라인 삭제함수 호출
 
     arr.splice(index, 1);
@@ -78,9 +78,11 @@ $edit_input.forEach((edit) => {
   edit.addEventListener("keydown", function (e) {
     let ls = localStorage.getItem("todo");
     let arr = JSON.parse(ls);
+    //수정한 일정의 id 얻어오기
     let index = arr.findIndex((info) => info.id == e.target.closest("li").id);
 
     if (e.key === "Enter") {
+      //객체에서 값 가져오기
       let start = arr[index].start;
       let end = arr[index].end;
       let interval = parseInt(end) - parseInt(start);
@@ -168,7 +170,7 @@ function remove_timeline(info) {
   var startTime = info.start; // 설정된 시작 시간
   var endTime = info.end; // 설정된 마감 시간
 
-  let startTimeNum = Number(startTime.substr(0, 2));
+  let startTimeNum = Number(startTime.substr(0, 2)); //시간(hh:00)에서 h값만 추출해서 Number형식으로 만들기
   let endTimeNum = Number(endTime.substr(0, 2));
   let cnt = 0;
 
@@ -200,10 +202,9 @@ function remove_timeline(info) {
 }
 
 function highlightColor() {
-  // 일정있음 색칠하기 +++++++ 내용 추가해야지
+  // 일정있음 색칠하기 +++++++
   var rows = table.getElementsByTagName("tr"); // 테이블 모든 행을 가져왔다
 
-  // console.log("highlightColor",rows, rows.length);
   for (var i = 0; i < rows.length; i++) {
     var contentCell = rows[i].getElementsByTagName("td")[1]; // 현재 행의 두 번째 셀을 가져옴 (내용 셀)
     var rowTime = rows[i]
@@ -212,17 +213,14 @@ function highlightColor() {
 
     if (localArray[i][1] != "") {
       contentCell.style.backgroundColor = "yellow";
-      if (contentCell.textContent != localArray[i - 1][1]) {
-      } // 텅 ~
-      else {
-        contentCell.textContent = localArray[i][1];
+      if (contentCell.textContent == localArray[i - 1][1]) {
+        contentCell.textContent = localArray[i][1]; //일정 시작일 때만 일정 내용 추가
       }
     } else {
-      contentCell.style.backgroundColor = "white";
+      contentCell.style.backgroundColor = "white"; //일정이 없을 경우 하얀색으로
     }
-
     if (contentCell.style.backgroundColor == "white") {
-      contentCell.textContent = "";
+      contentCell.textContent = ""; //일정이 없을 경우 텍스트도 없게한다.
     }
   }
 }

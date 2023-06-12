@@ -1,5 +1,5 @@
 //투두리스트(재원)---------------------
-let todo_storage = []; //localstorage에 넣을 구조체 배열
+let todo_storage = []; //localstorage에 넣을 객체 배열
 const K = "todo";
 const $todo_form = document.querySelector("#todo_form");
 const $todo_input = document.querySelector("#todo_input");
@@ -30,7 +30,7 @@ function input_todo(e) {
     return;
   }
   const todo_info = {
-    //텍스트와 id를 저장할 구조체
+    //텍스트와 id를 저장할 객체
     text: todo_text,
     id: Date.now(), //현재시간으로 id를 주어 각각의 할 일 구분
     day: $sel_day.innerText, //선택된 날짜
@@ -101,7 +101,7 @@ function refresh_todo(arr) {
 function remove_todo(e) {
   //삭제하는 함수
   //일정 삭제하기
-  const removeButton = e.target; //부모 객체(li 태그) 선택
+  const removeButton = e.target; //부모 태그(li 태그) 선택
   const list = removeButton.closest("li"); // 최상위 li 요소를 선택하기 위해 closest() 메소드 사용
   //id가 다른 값(제거할 값)을 빼고 다시 배열 생성해서 저장
   if (list) {
