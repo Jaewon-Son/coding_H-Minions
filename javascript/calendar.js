@@ -47,7 +47,7 @@ function Calendar() {
       };
     } else if (
       thisday.getFullYear() == today.getFullYear() &&
-      thisday.getMonth() == thisday.getMonth() &&
+      thisday.getMonth() == today.getMonth() &&
       thisday.getDate() == today.getDate()
     ) {
       // 오늘인 경우
