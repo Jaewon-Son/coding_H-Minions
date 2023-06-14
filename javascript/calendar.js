@@ -22,7 +22,7 @@ function Calendar() {
     let newCell = firstRow.insertCell(); // 새로운 셀(열) 추가
   }
   for (
-    let thisday = firstdate;
+    thisday = firstdate;
     thisday <= lastdate;
     thisday.setDate(thisday.getDate() + 1)
   ) {
