@@ -1,48 +1,88 @@
 //투두리스트(재원)---------------------
-let todo_storage = []; //localstorage에 넣을 객체 배열
 const K = "todo";
 const $todo_form = document.querySelector("#todo_form");
 const $todo_input = document.querySelector("#todo_input");
 const $todo_list = document.querySelector("#todo_list");
 const $start_time = document.querySelector("#startTime");
 const $end_time = document.querySelector("#endTime");
-let $sel_day = document.querySelector("#selected");
-$todo_form.addEventListener("submit", input_todo);
+const $cal_table = document.querySelector("#tablebody");
 
-const load_todo = localStorage.getItem(K); //localstorage에서 불러오기
-if (load_todo) {
-  const loaded = JSON.parse(load_todo); //localstorage에 있는 문자열을 다시 배열로 변환
-  todo_storage = loaded; //배열에 저장
-  for (let i = 0; i < todo_storage.length; i++) {
-    //불러온 함수를 표시하기
-    add_todo(todo_storage[i]);
+$cal_table.onclick = function (e) {
+  //달력 내의 날짜 클릭시 투두리스트 갱신
+  if (e.target.tagName != "TD") {
+    //잘못 클릭할 경우
+    return;
+  }
+  load();
+};
+
+let todo_storage; //localstorage에 넣을 객체 배열
+let today_storage; //현재 날짜의 할일을 넣을 배열
+let today_index; //전체 todo배열에서 가져온 오늘 날짜의 인덱스
+$todo_form.addEventListener("submit", input_todo);
+load();
+function load() {
+  //할 일을 불러오는 함수
+
+  //투두리스트 안에 표시된 모든 할 일 선택
+  let all = document.querySelectorAll("#todo_list li");
+  //투두리스트 안에 표시된 모든 할 일 제거
+  all.forEach((li) => li.remove());
+
+  let $year = document.querySelector("#thisYear"); //달력에서 현재 위치한 년도 불러오기
+  let $sel_day = document.querySelector("#selected"); //달력에서 선택한날짜 불러오기
+  let $month = document.querySelector("#thisMonth"); //달력에서 현재 위치한 달 불러오기
+  let $date = $year.innerText + $month.innerText + $sel_day.innerText;
+  todo_storage = [];
+  today_storage = [];
+  today_id = [];
+  const load_todo = localStorage.getItem(K); //localstorage에서 불러오기
+  if (load_todo) {
+    todo_storage = JSON.parse(load_todo); //localstorage에 있는 문자열을 다시 배열로 변환해서 저장
+    today_storage = todo_storage.filter((todo) => todo.date == $date);
+    today_id = get_id(todo_storage, $date); //todo_storage에서 오늘 날짜를 값으로 가지고 있는 배열의 인덱스
+    for (let i = 0; i < today_storage.length; i++) {
+      //불러온 함수를 표시하기
+      add_todo(today_storage[i]);
+    }
   }
 }
 
 function input_todo(e) {
   //할 일 입력시
-  $sel_day = document.querySelector("#selected"); // 선택한 날짜 지정
   e.preventDefault(); //새로고침 방지
+  $year = document.querySelector("#thisYear");
+  $month = document.querySelector("#thisMonth");
+  $sel_day = document.querySelector("#selected"); // 선택한 날짜 지정
+  let date = $year.innerText + $month.innerText + $sel_day.innerText; //일정을 추가한 날짜 yymmdd
   const todo_text = $todo_input.value; //입력받은 할 일을 변수에 저장
-  if ($todo_input.value == "") {
+  console.log(todo_text);
+  if (todo_text == "") {
     //아무것도 입력하지 않았을 때
     alert("할 일을 입력하세요!!");
+    console.log("hi");
+    return;
+  }
+  if ($sel_day == null) {
+    //날짜를 선택하지 않았을 때
+    alert("날짜를 선택해주세요!!");
     return;
   }
   const todo_info = {
     //텍스트와 id를 저장할 객체
     text: todo_text,
     id: Date.now(), //현재시간으로 id를 주어 각각의 할 일 구분
-    day: $sel_day.innerText, //선택된 날짜
+    date: date, //일정을 추가한 날짜
     start: $start_time.value, //시작 시간
     end: $end_time.value, //마감 시간
     done: false, //체크박스가 체크 되어있으면 true로 변경
   };
-  // $todo_input.value = ""; //입력창 초기화
   add_todo(todo_info); //화면에 표시하는 함수 호출
-  todo_storage.push(todo_info); //localstorage 최신화
+  today_storage.push(todo_info); //오늘 할일 배열에 최신화
+  todo_storage.push(todo_info); //전체 할일 배열에 최신화
   refresh_todo();
 }
+
 
 function add_todo(info) {
   //할 일을 화면에 표시하는 함수(할일,버튼들 추가)
@@ -91,10 +131,21 @@ function add_todo(info) {
   list.appendChild(editInput); //리스트에 입력창 추가
 }
 
-function refresh_todo(arr) {
+function refresh_todo() {
   //localstorage에 최신화 시키기
   localStorage.setItem(K, JSON.stringify(todo_storage));
   //JSON_stringify : 요소를 문자열로 바꿔주는 함수
+}
+
+function get_id(arr, date) {
+  //객체 배열에서 해당 객체의 날짜 값과 현재 날짜의 값이 같은 요소의 인덱스를 가져오는 함수
+  let indexes = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].date == date) {
+      indexes.push(arr[i].id);
+    }
+  }
+  return indexes; //인덱스 번호가 모인 배열을 리턴
 }
 
 //민형님 삭제/수정 파트---------------------------------------------
@@ -106,10 +157,12 @@ function remove_todo(e) {
   //id가 다른 값(제거할 값)을 빼고 다시 배열 생성해서 저장
   if (list) {
     list.remove();
-
-    todo_storage = todo_storage.filter(
+    //재원-----------------
+    today_storage = today_storage.filter(
+      //삭제를 클릭한 id와 남아있는 일정의 id가 같지 않을때 배열 생성(삭제한 것을 빼고 다시 배열 생성)
       (remain) => remain.id !== parseInt(list.id)
     );
+    todo_storage = todo_storage.filter((remain)=> remain.id !== parseInt(list.id));
   }
 }
 
@@ -117,7 +170,7 @@ function toggleStrikeThrough(event) {
   //완료하면 취소선
   //완료체크 되면 done을 true로 뱌꾸기(취소선 유지)-----(재원)
   const id = parseInt(event.target.parentElement.id); //현재 할일의 id
-  const todo = todo_storage.find((todo) => todo.id == id); //현재 할일의 local배열 인덱스 가져오기
+  const todo = today_storage.find((todo) => todo.id == id); //현재 할일의 local배열 인덱스 가져오기
   if (todo.done == true) {
     //이미 완료한 일 일경우 false로 변경
     todo.done = false;
