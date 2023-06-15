@@ -68,6 +68,11 @@ function input_todo(e) {
     alert("날짜를 선택해주세요!!");
     return;
   }
+  if($start_time.value == "00:00" && $end_time.value == "00:00"){
+    //시간을 선택하지 않았을 때
+    alert("시간을 선택해주세요");
+    return;
+  }
   const todo_info = {
     //텍스트와 id를 저장할 객체
     text: todo_text,
